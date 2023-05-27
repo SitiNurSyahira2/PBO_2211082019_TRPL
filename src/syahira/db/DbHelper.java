@@ -14,17 +14,26 @@ import javax.swing.JOptionPane;
  */
 public class DbHelper {
     private static Connection connection;
+    public static Connection getConnection() throws SQLException {
+        if(connection==null){
+            MysqlDataSource dataSource = new MysqlDataSource();
+            dataSource.setURL("jdbc:mysql://localhost/pbo_2211083015");
+            dataSource.setUser("root");
+            dataSource.setPassword("");
+            connection = dataSource.getConnection();
+        }
+        return connection;
+    }
     
-    public static Connection getConnection() throws SQLException{
-    if(connection==null){
-    MysqlDataSource dataSource = new MysqlDataSource();
-    dataSource.setURL( url: "jdbc:mysql://pbo_2211082019");
-    dataSource.setUser(userID:"root");
-    dataSource.setPassword(pass: "");
-    connection = dataSource.getConnection();
-    }    
-    return connection;
+    public static void main(String[] args){
+        try {
+            connection = DbHelper.getConnection();
+            AnggotaDao dao = new AnggotaDaoImpl(connection);
+            Anggota anggota = new Anggota("A002","Riva","Batusangkar","P");
+            dao.insert(anggota);
+            JOptionPane.showMessageDialog(null, "Entri data OK");
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
 }
-    
-public static void main(String[]args)(
-
